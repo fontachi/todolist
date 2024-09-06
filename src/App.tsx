@@ -18,7 +18,7 @@ function App() {
     let [filterIs, setFilter] = useState<FilterType>("All");
 
     function addingTask(title: string,) {
-        let newTasks=[{id:v1(),title:title,isDone:false}, ...tasks];
+        let newTasks = [{id: v1(), title: title, isDone: false}, ...tasks];
         setTasks(newTasks);
     }
 
@@ -29,30 +29,37 @@ function App() {
         setTasks(newTasks);
     }
 
-    function filteredTasks(filter:FilterType) {
+    function filteredTasks(filter: FilterType) {
         setFilter(filter)
     }
 
+    function onCheckedTask(id: string, isDone: boolean) {
+        let chengingArrayTasks = tasks.map((task: TasksType) => {
+            return task.id === id ? {...task, isDone: isDone} : task
+        });
+        setTasks(chengingArrayTasks)
+    }
+
     let filterListTasks = tasks;
-        if (filterIs === "Completed") {
-            filterListTasks = tasks.filter((task: TasksType) => {
-                return task.isDone === true
-            })
-        }
-        if (filterIs === "Active") {
-            filterListTasks = tasks.filter((task: TasksType) => {
-                return task.isDone === false
-            })
-        }
-
-
+    if (filterIs === "Completed") {
+        filterListTasks = tasks.filter((task: TasksType) => {
+            return task.isDone === true
+        })
+    }
+    if (filterIs === "Active") {
+        filterListTasks = tasks.filter((task: TasksType) => {
+            return task.isDone === false
+        })
+    }
     return (
         <div className="App">
             <TodoList title="What to learn"
                       tasks={filterListTasks}
                       removingTask={removingTask}
                       filteredTasks={filteredTasks}
-                      addingTask={addingTask}/>
+                      addingTask={addingTask}
+                      onCheckedTask={onCheckedTask}
+                      filter={filterIs}/>
         </div>
     );
 }
