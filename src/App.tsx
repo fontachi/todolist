@@ -2,8 +2,10 @@ import React from 'react';
 import {useState} from "react";
 import './App.css';
 import {TasksType} from "./TodoList"
-import {TodoList} from "./TodoList";
 import {v1} from "uuid"
+import {TodoList} from "./TodoList";
+import {AddItemForm} from "./AddItemForm";
+import {renderIntoDocument} from "react-dom/test-utils";
 
 export type FilterType = "All" | "Completed" | "Active";
 type ListType = {
@@ -37,7 +39,7 @@ function App() {
         ]
     });
 
-    function addingTask( listId: string, title: string) {
+    function addingTask(listId: string, title: string) {
         let copyTodoListsTasks: ListType = {...listsTasks};
         let newListTasks: TasksType[] = [...copyTodoListsTasks[listId], {id: v1(), title: title, isDone: false}];
         copyTodoListsTasks[listId] = newListTasks;
@@ -67,25 +69,53 @@ function App() {
 
         let copyTodoLists = [...todoLists];
         copyTodoLists = copyTodoLists.map((list) => {
-            return   list.id===listId ?{...list, filter: filter}:list;
-            })
+            return list.id === listId ? {...list, filter: filter} : list;
+        })
         setList(copyTodoLists);
     }
 
     function removeingList(listId: string) {
-        let copyTodoLists=[...todoLists];
-        copyTodoLists=copyTodoLists.filter((list)=>{
+        let copyTodoLists = [...todoLists];
+        copyTodoLists = copyTodoLists.filter((list) => {
             return list.id !== listId;
         })
-        let copyListsTasks:ListType = {...listsTasks};
+        let copyListsTasks: ListType = {...listsTasks};
         delete copyListsTasks[listId];
         setListTasks(copyListsTasks);
         setList(copyTodoLists)
     }
 
+    function changeItemTitle(listId: string, taskId: string, title: string) {
+
+        let copyTodoListsTasks: ListType = {...listsTasks};
+        let chengingArrayTasks = copyTodoListsTasks[listId].map((task: TasksType) => {
+            return task.id === taskId ? {...task, title: title} : task
+        });
+        copyTodoListsTasks[listId] = chengingArrayTasks;
+        setListTasks(copyTodoListsTasks)
+    }
+
+    function onChangeListTitle(listId: string, title: string) {
+        let copyTodoLists: Array<todoListType> = [...todoLists];
+        copyTodoLists = copyTodoLists.map((list) => {
+            return list.id === listId ? {...list, title:title} : list;
+        })
+        setList(copyTodoLists);
+    }
+
+    const addList = (title: string) => {
+        let copyTodoLists: Array<todoListType> = [...todoLists];
+        let idForNewList = v1();
+        copyTodoLists = [{id: idForNewList, title: title, filter: "All"}, ...copyTodoLists];
+        let copyTodoListTasks: ListType = {...listsTasks};
+        copyTodoListTasks[idForNewList] = [];
+        setListTasks(copyTodoListTasks)
+        setList(copyTodoLists);
+    }
 
     return (
         <div className="App">
+            <AddItemForm addItem={addList}/>
             {
                 todoLists.map((list) => {
                     let filterListTasks = listsTasks[list.id];
@@ -108,6 +138,8 @@ function App() {
                                   addingTask={addingTask}
                                   onCheckedTask={onCheckedTask}
                                   removeingList={removeingList}
+                                  changeTaskTitle={changeItemTitle}
+                                  onChangeListTitle={onChangeListTitle}
                                   filter={list.filter}/>
 
                     )
