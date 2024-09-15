@@ -47,7 +47,6 @@ function App() {
         copyTodoListsTasks[listId] = newListTasks;
         setListTasks(copyTodoListsTasks);
     }
-
     function removingTask(listId: string, taskId: string,) {
         let copyTodoListsTasks: ListType = {...listsTasks};
         let newListTasks: Array<TasksType> = copyTodoListsTasks[listId].filter((task) => {
@@ -56,7 +55,6 @@ function App() {
         copyTodoListsTasks[listId] = newListTasks;
         setListTasks(copyTodoListsTasks);
     }
-
     function onCheckedTask(listId: string, taskId: string, isDone: boolean) {
 
         let copyTodoListsTasks: ListType = {...listsTasks};
@@ -66,27 +64,6 @@ function App() {
         copyTodoListsTasks[listId] = chengingArrayTasks;
         setListTasks(copyTodoListsTasks)
     }
-
-    function filteredTasks(listId: string, filter: FilterType) {
-
-        let copyTodoLists = [...todoLists];
-        copyTodoLists = copyTodoLists.map((list) => {
-            return list.id === listId ? {...list, filter: filter} : list;
-        })
-        setList(copyTodoLists);
-    }
-
-    function removeingList(listId: string) {
-        let copyTodoLists = [...todoLists];
-        copyTodoLists = copyTodoLists.filter((list) => {
-            return list.id !== listId;
-        })
-        let copyListsTasks: ListType = {...listsTasks};
-        delete copyListsTasks[listId];
-        setListTasks(copyListsTasks);
-        setList(copyTodoLists)
-    }
-
     function changeItemTitle(listId: string, taskId: string, title: string) {
 
         let copyTodoListsTasks: ListType = {...listsTasks};
@@ -97,6 +74,24 @@ function App() {
         setListTasks(copyTodoListsTasks)
     }
 
+
+    function filteredTasks(listId: string, filter: FilterType) {
+        let copyTodoLists = [...todoLists];
+        copyTodoLists = copyTodoLists.map((list) => {
+            return list.id === listId ? {...list, filter: filter} : list;
+        })
+        setList(copyTodoLists);
+    }
+    function removeingList(listId: string) {
+        let copyTodoLists = [...todoLists];
+        copyTodoLists = copyTodoLists.filter((list) => {
+            return list.id !== listId;
+        })
+        let copyListsTasks: ListType = {...listsTasks};
+        delete copyListsTasks[listId];
+        setListTasks(copyListsTasks);
+        setList(copyTodoLists)
+    }
     function onChangeListTitle(listId: string, title: string) {
         let copyTodoLists: Array<todoListType> = [...todoLists];
         copyTodoLists = copyTodoLists.map((list) => {
@@ -104,7 +99,6 @@ function App() {
         })
         setList(copyTodoLists);
     }
-
     const addList = (title: string) => {
         let copyTodoLists: Array<todoListType> = [...todoLists];
         let idForNewList = v1();
@@ -145,9 +139,9 @@ function App() {
                                 return task.isDone === false
                             })
                         }
-                        return (<Grid item>
-                                <Paper style={{padding:"10px", margin:"30px"}}>
-                                    <TodoList key={list.id} title={list.title}
+                        return (<Grid item  key={list.id}>
+                                <Paper  style={{padding:"10px", margin:"30px"}}>
+                                    <TodoList title={list.title}
                                               id={list.id}
                                               tasks={filterListTasks}
                                               removingTask={removingTask}
@@ -159,7 +153,6 @@ function App() {
                                               onChangeListTitle={onChangeListTitle}
                                               filter={list.filter}/>
                                 </Paper>
-
                             </Grid>
                         )
                     })}

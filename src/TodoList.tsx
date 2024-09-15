@@ -30,7 +30,6 @@ export function TodoList(props: TodoListProps) {
 
     let [newTitle, setNewTitle] = useState('');
 
-
     const filterListAllTasks = () => {
         props.filteredTasks(props.id, "All")
     }
@@ -43,7 +42,6 @@ export function TodoList(props: TodoListProps) {
     const addItemList = (title:string)=>{
         props.addingTask(props.id, title)
     }
-
     const removeingList = () => {
         props.removeingList(props.id)
     }
@@ -60,7 +58,6 @@ export function TodoList(props: TodoListProps) {
             <div>
              <AddItemForm addItem={addItemList}/>
             </div>
-
             {
                 props.tasks.map((t: TasksType) => {
                     const onRemovingTask = () => {
@@ -85,11 +82,16 @@ export function TodoList(props: TodoListProps) {
                 })
             }
 
-            <Button  variant={props.filter === "All" ? "contained" : "text"} onClick={filterListAllTasks}>All</Button>
-            <Button color={"primary"} variant={"outlined"} className={props.filter === "Active" ? "active-filter" : ""}
+            <Button  variant={props.filter === "All" ? "contained" : "text"}
+                     onClick={filterListAllTasks}>All</Button>
+            <Button color={"primary"}
+                    variant={"outlined"}
+                    className={props.filter === "Active" ? "active-filter" : ""}
                     onClick={filterListActiveTasks}>Active
             </Button>
-            <Button color={"secondary"} variant={"outlined"} className={props.filter === "Completed" ? "active-filter" : ""}
+            <Button color={"secondary"}
+                    variant={"outlined"}
+                    className={props.filter === "Completed" ? "active-filter" : ""}
                     onClick={filterListCompletedTasks}>Completed
             </Button>
         </div>
