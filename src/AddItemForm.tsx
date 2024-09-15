@@ -1,4 +1,6 @@
+import {Button, IconButton, TextField} from "@mui/material";
 import React, {ChangeEvent, useState} from "react";
+import {Add} from "@mui/icons-material";
 
 type addItemFormProps = {
     addItem:(title:string)=>void,
@@ -28,13 +30,20 @@ export function AddItemForm(props: addItemFormProps): JSX.Element {
     }
     return (
         <div>
-            <input type={"text"} value={newTitle}
-                   onChange={onNewTitleChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
-            />
-            <button onClick={addingTask}>+</button>
-            {error ? <div className="error-message">{error}</div> : null}
+            <TextField error={!!error}
+                       size={"small"}
+                       id="outlined-basic"
+                       label="title value"
+                       variant="standard" type={"text"}
+                       value={newTitle}
+                       onChange={onNewTitleChangeHandler}
+                       onKeyPress={onKeyPressHandler}
+                       className={error ? "error" : ""}
+                       helperText={error}/>
+            <IconButton color={"primary"} onClick={addingTask}>
+                <Add></Add>
+            </IconButton>
+
         </div>
 
     )
