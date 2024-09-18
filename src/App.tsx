@@ -10,10 +10,10 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@mui/icons-material";
 
 export type FilterType = "All" | "Completed" | "Active";
-type ListType = {
+export type ListType = {
     [id: string]: Array<TasksType>,
 }
-type todoListType = {
+export type todoListType = {
     id: string,
     title: string,
     filter: string
